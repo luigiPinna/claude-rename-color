@@ -1,0 +1,16 @@
+{
+  "name": "rename-color",
+  "version": "0.1.0",
+  "description": "Rename and color a Claude Code session in one command, or let it pick both from the project folder and git branch.",
+  "author": { "name": "Luigi Pinna", "url": "https://github.com/luigiPinna" },
+  "repository": "https://github.com/luigiPinna/claude-rename-color",
+  "license": "MIT",
+  "userConfig": {
+    "autoOnStart": {
+      "type": "boolean",
+      "title": "Auto name and color on new sessions",
+      "description": "On a new session, run /rnc with no arguments: name from folder and branch, color from the folder.",
+      "default": false
+    }
+  }
+}

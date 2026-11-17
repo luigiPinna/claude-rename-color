@@ -1,0 +1,6 @@
+{
+  "name": "claude-rename-color",
+  "description": "The rename-color mod for Claude Code: /rnc renames and colors a session in one command.",
+  "owner": { "name": "Luigi Pinna" },
+  "plugins": [{ "name": "rename-color", "source": "./" }]
+}
