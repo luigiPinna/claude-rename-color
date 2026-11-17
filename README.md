@@ -2,7 +2,7 @@
 
 A Claude Code mod that adds `/rnc`: `/rename` and `/color` in one command. With no arguments it names the session after the project folder and git branch, and picks a color from the folder, so every session in the same project gets the same color.
 
-<img src="docs/rnc-auto.png" alt="/rnc with no arguments: the session is named acme-web · feature/checkout and colored blue" width="720">
+<img src="docs/demo.gif" alt="/rnc names the session acme-web · feature/checkout in blue, then /rnc payments refactor purple renames it and turns it purple" width="720">
 
 ## Usage
 
