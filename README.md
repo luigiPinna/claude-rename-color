@@ -4,7 +4,7 @@
 
 **Name and color your Claude Code sessions in one command, or let them name themselves after the project and git branch.**
 
-[![Release](https://img.shields.io/github/v/release/luigiPinna/claude-rename-color?sort=semver)](https://github.com/luigiPinna/claude-rename-color/releases)
+[![Release](https://img.shields.io/github/v/release/luigiPinna/claude-rename-color?display_name=release)](https://github.com/luigiPinna/claude-rename-color/releases)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Claude Code](https://img.shields.io/badge/Claude%20Code-2.1.326-d97757)](https://code.claude.com)
 [![Type: mod](https://img.shields.io/badge/type-hooks%20mod-555)](#how-it-works)
