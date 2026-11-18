@@ -1,6 +1,6 @@
 {
   "name": "rename-color",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Rename and color a Claude Code session in one command, or let it pick both from the project folder and git branch.",
   "author": { "name": "Luigi Pinna", "url": "https://github.com/luigiPinna" },
   "repository": "https://github.com/luigiPinna/claude-rename-color",

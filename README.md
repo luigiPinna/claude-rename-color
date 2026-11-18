@@ -2,7 +2,7 @@
 
 A Claude Code mod that adds `/rnc`: `/rename` and `/color` in one command. With no arguments it names the session after the project folder and git branch, and picks a color from the folder, so every session in the same project gets the same color.
 
-<img src="docs/demo.gif" alt="/rnc names the session acme-web · feature/checkout in blue, then /rnc payments refactor purple renames it and turns it purple" width="720">
+![/rnc names the session acme-web · feature/checkout in blue, then /rnc payments refactor purple renames it and turns it purple](docs/demo.gif)
 
 ## Usage
 
@@ -15,7 +15,7 @@ A Claude Code mod that adds `/rnc`: `/rename` and `/color` in one command. With 
 
 If the last word is a color, it is used as the color; everything before it is the name.
 
-<img src="docs/rnc-manual.png" alt="/rnc payments refactor purple: the session is named payments refactor and colored purple" width="720">
+![/rnc payments refactor purple: the session is named payments refactor and colored purple](docs/rnc-manual.png)
 
 Colors: `red`, `blue`, `green`, `yellow`, `purple`, `orange`, `pink`, `cyan`, `default`.
 
@@ -27,7 +27,7 @@ The `autoOnStart` option (off by default) runs `/rnc` with no arguments when a n
 
 You can turn it on when installing, or later from `/config` ("Auto name and color on new sessions").
 
-<img src="docs/auto-on-start.png" alt="A new session that named and colored itself on start, with nothing typed" width="720">
+![A new session that named and colored itself on start, with nothing typed](docs/auto-on-start.png)
 
 ## Install
 
@@ -44,6 +44,12 @@ From a shell:
 ```
 claude plugin install rename-color --marketplace luigiPinna/claude-rename-color
 ```
+
+## What it reads and runs
+
+- Reads the session's working directory and the `.git/HEAD` file in it (or the one a worktree's `.git` file points to). Nothing else on disk.
+- Runs Claude Code's own `/rename` and `/color` commands. With `autoOnStart` on, it also reads whether the session already has messages, to leave resumed sessions alone.
+- No network access, no git process, nothing stored. If something fails, it shows one line starting with `rnc: failed:`.
 
 ## Requirements
 
