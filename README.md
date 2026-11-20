@@ -29,10 +29,11 @@ With several Claude Code sessions open in different terminal tabs, they all look
 ## Features
 
 - **One command:** `/rnc <name> <color>` runs `/rename` and `/color` for you.
-- **Automatic names:** `/rnc` alone names the session `folder · branch`, git worktrees included.
+- **Automatic names:** `/rnc` alone names the session `folder · branch`, git worktrees included. It follows the folder the session works in, so a session opened in your home folder that moved into a project is named after that project.
 - **Stable colors:** the color comes from the folder name, so the same project gets the same color in every session, on every machine.
+- **Remembered colors:** pick a color once with `/rnc <color>` or `/rnc <name> <color>` and that project or name keeps it in later sessions.
 - **Optional auto-start:** turn on `autoOnStart` and every new session names and colors itself. Resumed sessions keep their name.
-- **Lightweight:** about 100 lines of TypeScript, no dependencies, no network, no git process.
+- **Lightweight:** about 160 lines of TypeScript, no dependencies, no network, no git process.
 
 ## Install
 
@@ -60,12 +61,13 @@ In the desktop app, where `/plugin` doesn't run: click **+** next to the prompt 
 
 | Command | Name | Color |
 | --- | --- | --- |
-| `/rnc sky copswap blue` | `sky copswap` | `blue` |
-| `/rnc sky copswap` | `sky copswap` | the project folder's color |
-| `/rnc` | `<folder> · <branch>`, or just `<folder>` outside git | the project folder's color |
-| `/rnc blue` | unchanged | `blue` |
+| `/rnc sky copswap blue` | `sky copswap` | `blue`, remembered for `sky copswap` |
+| `/rnc sky copswap` | `sky copswap` | the color remembered for `sky copswap`, else one computed from the name |
+| `/rnc` | `<folder> · <branch>`, or just `<folder>` outside git | the color remembered for the folder, else one computed from its name |
+| `/rnc blue` | unchanged | `blue`, remembered for the project folder |
+| `/rnc default` | unchanged | no color, and the folder's remembered color is forgotten |
 
-If the last word is a color, it is the color, and everything before it is the name. Colors are case-insensitive.
+If the last word is a color, it is the color, and everything before it is the name. Colors and remembered names are case-insensitive.
 
 Available colors: `red`, `blue`, `green`, `yellow`, `purple`, `orange`, `pink`, `cyan`, and `default` to reset.
 
@@ -83,8 +85,8 @@ Turn it on when you install, or later from `/config` ("Auto name and color on ne
 
 ## How it works
 
-- **Name:** the folder name comes from the session's working directory. The branch is read from `.git/HEAD`; in a git worktree, where `.git` is a file with a `gitdir:` pointer, the mod follows the pointer. A detached HEAD gives just the folder name.
-- **Color:** a small hash of the folder name picks one of the eight colors, so it never changes for a given folder.
+- **Name:** the folder is the git repository around the session's current directory, so a `cd` into `~/code/acme/src` gives `acme`. Outside git it is the folder the session started in, or the current directory when that is somewhere else. The branch is read from `.git/HEAD`; in a git worktree, where `.git` is a file with a `gitdir:` pointer, the mod follows the pointer. A detached HEAD gives just the folder name.
+- **Color:** a color picked with `/rnc` is saved in the mod's own store under the name it was picked for. Without one, a small hash of the name picks one of the eight colors, so it never changes for a given folder or name.
 - **Running the commands:** a `command.run` hook can't run other commands while it is still answering, because they would wait on the turn it is holding. So `/rnc` answers right away and schedules `/rename` and `/color` with `$.clock.after(0, ...)`.
 - **Auto-start:** the `session.start` hook registers `/rnc` and, with `autoOnStart` on, checks whether the session already has messages. Only an empty, new session is renamed.
 
@@ -92,14 +94,14 @@ The whole mod is in [`hooks/register.ts`](hooks/register.ts).
 
 ## What it reads and runs
 
-- Reads the session's working directory and the `.git/HEAD` file in it (or the one a worktree's `.git` file points to). Nothing else on disk.
+- Reads the session's current and start directories, checks the folders above the current one for a `.git`, and reads that repository's `.git/HEAD` (or the one a worktree's `.git` file points to). Nothing else on disk.
 - Runs Claude Code's own `/rename` and `/color` commands. With `autoOnStart` on, it also reads whether the session already has messages, to leave resumed sessions alone.
-- No network access, no git process, nothing stored. If something fails, it shows one line starting with `rnc: failed:`.
+- Stores only the colors you pick, keyed by folder or session name, in the mod's own store under the Claude Code configuration directory. No network access, no git process. If something fails, it shows one line starting with `rnc: failed:`.
 
 ## Limitations
 
 - `/color` accepts only eight colors in Claude Code 2.1.326, so two projects can get the same one. Use `/rnc <color>` to pick another.
-- The automatic color comes from the folder name; you can't assign a color to a folder in a config file.
+- Remembered colors are keyed by folder name, not full path, so two folders with the same name share one.
 - Tested in the terminal.
 
 ## Development
